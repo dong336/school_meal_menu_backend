@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.school_meal_menu_backend.mapper.SchoolMapper">
+    <select id="selectAllSchool" resultType="map">
+        select
+            id,
+            atpt_ofcdc_sc_code,
+            sd_schul_code,
+            school_name,
+            address
+        from t_school
+    </select>
+
+    <select id="selectSchoolByPaging" parameterType="map" resultType="map">
+        select
+            id,
+            atpt_ofcdc_sc_code,
+            sd_schul_code,
+            school_name,
+            address
+        from t_school
+        order by id asc
+        limit #{count} offset #{pageNum}
+    </select>
+
+    <select id="selectSchoolCount" resultType="int">
+        select count(*) from t_school
+    </select>
+
+    <select id="selectSchoolByName" parameterType="string">
+        select
+            id,
+            atpt_ofcdc_sc_code,
+            sd_schul_code,
+            school_name,
+            address
+        from t_school ts
+        where school_name like concat('%', #{param}, '%')
+    </select>
+</mapper>
