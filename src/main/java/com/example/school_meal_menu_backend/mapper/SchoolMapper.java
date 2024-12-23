@@ -15,4 +15,6 @@ public interface SchoolMapper {
     List<Map<String, Object>> selectSchoolByName(String param);
 
     Integer selectSchoolCount();
+
+    Map<String, Object> selectSchoolOne(int id);
 }

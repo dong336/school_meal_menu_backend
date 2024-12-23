@@ -21,14 +21,29 @@ public class SchoolApiController {
 
     @GetMapping("/search")
     public ResponseEntity<?> selectSchoolByName(@RequestParam Map<String, Object> request) {
-        log.info("req: {}", request);
+        log.debug("req: {}", request);
 
-        String param = (String) request.get("school_name");
+        String schoolName = (String) request.get("school_name");
 
-        List<Map<String, Object>> results = schoolService.getSchoolsByName(param);
+        List<Map<String, Object>> results = schoolService.getSchoolsByName(schoolName);
 
         return new ResponseEntity<>(
                 results,
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/menu")
+    public ResponseEntity<?> bringMealFromNeis(@RequestParam Map<String, Object> request) {
+        log.debug("req: {}", request);
+
+        String id = (String) request.get("id");
+        String date = (String) request.get("date");
+
+        Map<String, Object> result = schoolService.getTodaySchoolMenu(id, date);
+
+        return new ResponseEntity<>(
+                result,
                 HttpStatus.OK
         );
     }

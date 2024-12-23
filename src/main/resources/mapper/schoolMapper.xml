@@ -39,4 +39,15 @@
         from t_school ts
         where school_name like concat('%', #{param}, '%')
     </select>
+
+    <select id="selectSchoolOne" parameterType="int" resultType="map">
+        select
+            id,
+            atpt_ofcdc_sc_code,
+            sd_schul_code,
+            school_name,
+            address
+        from t_school ts
+        where id = #{id}
+    </select>
 </mapper>

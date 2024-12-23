@@ -1,13 +1,21 @@
 package com.example.school_meal_menu_backend.service;
 
 import com.example.school_meal_menu_backend.api.client.NeisClient;
+import com.example.school_meal_menu_backend.dto.neis.NeisResponse;
 import com.example.school_meal_menu_backend.mapper.SchoolMapper;
+import com.example.school_meal_menu_backend.util.DateUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SchoolService {
@@ -19,17 +27,44 @@ public class SchoolService {
         List<Map<String, Object>> dataList = schoolMapper.selectSchoolByName(schoolName);
 
         return dataList.stream().map(data -> Map.of(
-                "id", data.get("id"),
+                "id", data.get("id").toString(),
                 "address", data.get("address"),
-                "school_name", data.get("school_name")
+                "school_name", data.get("school_name"),
+                "ATPT_OFCDC_SC_CODE", data.get("atpt_ofcdc_sc_code"),
+                "SD_SCHUL_CODE", data.get("sd_schul_code")
             )
         ).toList();
     }
 
-    public Map<String, Object> getTodaySchoolMenu(String schoolName) {
+    public Map<String, Object> getTodaySchoolMenu(String id, String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate parsed = LocalDate.parse(date, formatter);
 
-        Map<String, Object> rawData = neisClient.fetchJsonAsMap();
+        YearMonth yearMonth = YearMonth.from(parsed);
+        LocalDate firstDayOfMonth = yearMonth.atDay(1);
+        LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
 
-        return null;
+        Map<String, Object> data = schoolMapper.selectSchoolOne(Integer.parseInt(id));
+
+        String atptOfcdcScCode = (String) data.get("atpt_ofcdc_sc_code");
+        String sdSchulCode = (String) data.get("sd_schul_code");
+
+        String jsonBody = neisClient
+                .getMealsForDateAndSchool(
+                        atptOfcdcScCode,
+                        sdSchulCode,
+                        DateUtil.convertToStrFromDate(firstDayOfMonth),
+                        DateUtil.convertToStrFromDate(lastDayOfMonth)
+                );
+//        String dishs = neisResponse
+//                .getMealServiceDietInfo()
+//                .get(0)
+//                .getRow()
+//                .get(0)
+//                .getDDISH_NM();
+
+        log.info("dishs: {}", jsonBody);
+
+        return Map.of("data", jsonBody);
     }
 }
