@@ -26,14 +26,7 @@ public class SchoolService {
     public List<Map<String, Object>> getSchoolsByName(String schoolName) {
         List<Map<String, Object>> dataList = schoolMapper.selectSchoolByName(schoolName);
 
-        return dataList.stream().map(data -> Map.of(
-                "id", data.get("id").toString(),
-                "address", data.get("address"),
-                "school_name", data.get("school_name"),
-                "ATPT_OFCDC_SC_CODE", data.get("atpt_ofcdc_sc_code"),
-                "SD_SCHUL_CODE", data.get("sd_schul_code")
-            )
-        ).toList();
+        return dataList;
     }
 
     public Map<String, Object> getTodaySchoolMenu(String id, String date) {
@@ -56,12 +49,6 @@ public class SchoolService {
                         DateUtil.convertToStrFromDate(firstDayOfMonth),
                         DateUtil.convertToStrFromDate(lastDayOfMonth)
                 );
-//        String dishs = neisResponse
-//                .getMealServiceDietInfo()
-//                .get(0)
-//                .getRow()
-//                .get(0)
-//                .getDDISH_NM();
 
         log.info("dishs: {}", jsonBody);
 

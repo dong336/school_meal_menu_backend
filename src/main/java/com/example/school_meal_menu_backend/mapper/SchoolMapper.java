@@ -12,7 +12,7 @@ public interface SchoolMapper {
 
     List<Map<String, Object>> selectSchoolByPaging(Map<String, Object> params);
 
-    List<Map<String, Object>> selectSchoolByName(String param);
+    List<Map<String, Object>> selectSchoolByName(String schoolName);
 
     Integer selectSchoolCount();
 

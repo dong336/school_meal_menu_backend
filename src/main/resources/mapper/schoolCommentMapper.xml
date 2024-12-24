@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.school_meal_menu_backend.mapper.SchoolCommentMapper">
+    <select id="selectCommentBySchool" parameterType="int" resultType="map">
+        select
+            id,
+            comment,
+            created_by,
+            updated_by,
+            DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at,
+            DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at
+        from t_school_comment tsc
+        where tsc.school_id = #{schoolId}
+        and tsc.is_deleted = 0
+        order by id desc
+    </select>
+
+    <insert id="insertCommentOne" parameterType="map">
+        INSERT INTO t_school_comment (
+            school_id,
+            school_name,
+            comment,
+            created_by
+        ) VALUES (
+            #{schoolId},
+            #{schoolName},
+            #{comment},
+            #{createdBy}
+        )
+    </insert>
+
+    <update id="updateCommentOne" parameterType="map">
+        update t_school_comment
+        set comment = #{comment}
+        where id = #{id}
+    </update>
+
+    <update id="deleteCommentOne" parameterType="int">
+        update t_school_comment
+        set is_deleted = 1
+        where id = #{id}
+    </update>
+</mapper>

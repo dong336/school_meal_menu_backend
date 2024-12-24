@@ -32,12 +32,13 @@
     <select id="selectSchoolByName" parameterType="string">
         select
             id,
-            atpt_ofcdc_sc_code,
-            sd_schul_code,
+            atpt_ofcdc_sc_code as ATPT_OFCDC_SC_CODE,
+            sd_schul_code as SD_SCHUL_CODE,
             school_name,
             address
         from t_school ts
-        where school_name like concat('%', #{param}, '%')
+        where school_name like concat('%', #{schoolName}, '%')
+        limit 10
     </select>
 
     <select id="selectSchoolOne" parameterType="int" resultType="map">
