@@ -21,11 +21,12 @@ public class SchoolCommentService {
         return dataList;
     }
 
-    public void insertCommentOne(int schoolId, String schoolName, String comment, String createdBy) {
+    public void insertCommentOne(int schoolId, String schoolName, String comment, String createdByAnonymous, String createdBy) {
         Map<String, Object> params = Map.of(
                 "schoolId", schoolId,
                 "schoolName", schoolName,
                 "comment", comment,
+                "createdByAnonymous", createdByAnonymous,
                 "createdBy", createdBy
         );
 

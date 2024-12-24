@@ -35,9 +35,10 @@ public class SchoolCommentApiController {
         int id = (int) request.get("school_id");
         String schoolName = (String) request.get("school_name");
         String comment = (String) request.get("comment");
+        String createdByAnonymous = (String) request.get("created_by_anonymous");
         String createdBy= (String) request.get("created_by");
 
-        schoolCommentService.insertCommentOne(id, schoolName, comment, createdBy);
+        schoolCommentService.insertCommentOne(id, schoolName, comment, createdByAnonymous, createdBy);
 
         return new ResponseEntity<>(
                 HttpStatus.CREATED

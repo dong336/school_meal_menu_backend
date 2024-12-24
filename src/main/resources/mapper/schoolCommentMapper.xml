@@ -7,6 +7,7 @@
         select
             id,
             comment,
+            created_by_anonymous,
             created_by,
             updated_by,
             DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at,
@@ -22,11 +23,13 @@
             school_id,
             school_name,
             comment,
+            created_by_anonymous,
             created_by
         ) VALUES (
             #{schoolId},
             #{schoolName},
             #{comment},
+            #{createdByAnonymous},
             #{createdBy}
         )
     </insert>
